@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
+  Image,
   Keyboard,
   StatusBar,
   StyleSheet,
@@ -14,13 +15,20 @@ import strings from '../config/strings';
 import defaultStyles from '../config/default-styles';
 import {windowWidth, windowHeight} from '../config/utils';
 import constants from '../config/constants';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {firebase} from '../firebase/config';
 import routes from '../routes/routes';
+import AppText from '../components/AppText';
+import {useDispatch} from 'react-redux';
+import {authenticate} from '../store/slices/authSlice';
+
+let appVerifier;
 
 export default function AuthScreen(props) {
   const {navigation} = props;
   const [inFocus, setInFocus] = useState(false);
   const [number, setNumber] = useState();
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     Keyboard.addListener('keyboardDidShow', onKeyboardShow);
@@ -39,10 +47,61 @@ export default function AuthScreen(props) {
     setInFocus(false);
   };
 
+  const onSignIn = () => {
+    // todo to remove
+    onSignInSubmit();
+    /*
+    window.recaptchaVerifier = firebase.auth.RecaptchaVerifier(
+      'sign-in-button',
+      {
+        size: 'invisible',
+        callback: (response) => {
+          // onSignInSubmit();
+        },
+      },
+    );
+    appVerifier = window.recaptchaVerifier;
+    */
+  };
+
+  const onSignInSubmit = async () => {
+    // todo to remove
+    navigation.navigate(routes.Verify);
+    return;
+    // todo to add
+    /*
+    try {
+      const confirmation = await firebase
+        .auth()
+        .signInWithPhoneNumber(`+91${number}`, appVerifier);
+      navigation.navigate(routes.Verify, {
+        confirm: confirmation,
+      });
+    } catch (error) {
+      console.log('error', error);
+    }
+    */
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={colors.light_blue} />
       <View style={styles.animate}>
+        <TouchableOpacity
+          onPress={() => dispatch(authenticate())}
+          style={{
+            position: 'absolute',
+            top: 8,
+            end: 8,
+            backgroundColor: colors.light_yellow,
+            borderRadius: 16,
+            paddingStart: 16,
+            paddingEnd: 16,
+            paddingTop: 5,
+            paddingBottom: 5,
+          }}>
+          <AppText>Skip</AppText>
+        </TouchableOpacity>
         {inFocus ? (
           <View style={styles.outline}>
             <Text style={[defaultStyles.subTitle, styles.text]}>
@@ -70,7 +129,10 @@ export default function AuthScreen(props) {
         <Text style={[defaultStyles.subTitle]}>{strings.mobileNo}</Text>
         <View style={styles.input}>
           <View style={styles.countryCode}>
-            <Icon color={colors.primary} size={32} name={'flag-outline'} />
+            <Image
+              style={styles.image}
+              source={require('../assets/images/flag.png')}
+            />
             <Text style={defaultStyles.title}>+91</Text>
           </View>
           <TextInput
@@ -89,9 +151,7 @@ export default function AuthScreen(props) {
           </Text>
         )}
         {!!number && number.trim().length === 10 && !inFocus && (
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate(routes.Verify)}>
+          <TouchableOpacity style={styles.button} onPress={onSignIn}>
             <Text style={defaultStyles.subTitle}>Continue</Text>
           </TouchableOpacity>
         )}
@@ -119,6 +179,10 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'center',
     padding: 10,
+  },
+  image: {
+    height: 30,
+    width: 40,
   },
   bottomSheet: {
     flex: 0.3,

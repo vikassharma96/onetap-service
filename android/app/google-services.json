@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "49460515607",
+    "project_id": "onetapservice-6abab",
+    "storage_bucket": "onetapservice-6abab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:49460515607:android:0df7c3e835a88db1ebdd52",
+        "android_client_info": {
+          "package_name": "com.teckudos.onetapservice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "49460515607-l1ph6aqagu9kd39hqqqsq3vecoes2m66.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.teckudos.onetapservice",
+            "certificate_hash": "fea224fd8f778496b8c5b8d143db36753bf43357"
+          }
+        },
+        {
+          "client_id": "49460515607-u4e1a7dnh899fas6g1c1250k625d7ev1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJPaE35g_BHA-KeL1GKWcYNwzBxzfl33U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "49460515607-u4e1a7dnh899fas6g1c1250k625d7ev1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

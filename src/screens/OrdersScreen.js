@@ -1,12 +1,12 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-export default function HomeScreen() {
+export default function OrdersScreen() {
   return (
     <View>
-      <Text>Home Screen</Text>
+      <Text>OrdersScreen</Text>
     </View>
   );
 }
 
-// const styles = StyleSheet.create({});
+const styles = StyleSheet.create({});

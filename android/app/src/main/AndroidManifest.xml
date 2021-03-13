@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.onetapservice">
+  package="com.teckudos.onetapservice">
 
     <uses-permission android:name="android.permission.INTERNET" />
 

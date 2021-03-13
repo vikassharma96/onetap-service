@@ -8,4 +8,7 @@ export default {
   light_yellow: '#FECC66',
   light_grey: '#d3d3d3',
   orange_red: '#ff4500',
+  background: '#f7f7f7',
+  black: '#000',
+  line: '#dbdbdb',
 };

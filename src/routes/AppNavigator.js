@@ -2,7 +2,7 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import AuthNavigator from './AuthNavigator';
-import {HomeNavigator} from './HomeNavigator';
+import {MainNavigator} from './MainNavigator';
 
 const AppNavigator = () => {
   const isAuth = useSelector((state) => !!state.auth.loggedIn);
@@ -10,7 +10,7 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       {!isAuth && <AuthNavigator />}
-      {isAuth && <HomeNavigator />}
+      {isAuth && <MainNavigator />}
     </NavigationContainer>
   );
 };

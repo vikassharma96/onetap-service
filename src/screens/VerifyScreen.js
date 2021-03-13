@@ -16,9 +16,23 @@ import constants from '../config/constants';
 import defaultStyles from '../config/default-styles';
 import {authenticate} from '../store/slices/authSlice';
 
-export default function VerifyScreen({navigation}) {
+export default function VerifyScreen(props) {
+  const {navigation, route} = props;
   const [otp, setOTP] = useState();
   const dispatch = useDispatch();
+
+  async function validateCode() {
+    Keyboard.dismiss();
+    try {
+      await route.params.confirm.confirm(otp);
+      dispatch(authenticate());
+    } catch (error) {
+      // todo to remove
+      dispatch(authenticate());
+      console.log('Invalid code');
+    }
+  }
+
   return (
     <ImageBackground
       blurRadius={0.2}
@@ -36,20 +50,13 @@ export default function VerifyScreen({navigation}) {
         <TextInput
           style={styles.input}
           value={otp}
-          maxLength={4}
+          maxLength={6}
           keyboardType={'number-pad'}
           onChangeText={(text) => setOTP(text)}
         />
       </View>
-      {!!otp && otp.length === 4 && (
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            Keyboard.dismiss();
-            setTimeout(() => {
-              dispatch(authenticate());
-            }, 1000);
-          }}>
+      {!!otp && otp.length === 6 && (
+        <TouchableOpacity style={styles.button} onPress={validateCode}>
           <Text style={defaultStyles.subTitle}>Submit</Text>
         </TouchableOpacity>
       )}
@@ -72,7 +79,7 @@ const styles = StyleSheet.create({
   input: {
     margin: 60,
     fontSize: 28,
-    letterSpacing: 24,
+    letterSpacing: 20,
     textAlign: 'center',
     borderBottomWidth: 2,
     fontFamily: constants.semiBold,
