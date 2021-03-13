@@ -6,4 +6,6 @@ export default {
   light_green: '#D9F7C6',
   light_blue: '#CADBFC',
   light_yellow: '#FECC66',
+  light_grey: '#d3d3d3',
+  orange_red: '#ff4500',
 };
