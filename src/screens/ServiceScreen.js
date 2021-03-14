@@ -10,115 +10,76 @@ import {
 } from 'react-native';
 import {Card} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useDispatch, useSelector} from 'react-redux';
 import AppText from '../components/AppText';
+import Seperator from '../components/Seperator';
 import colors from '../config/colors';
 import constants from '../config/constants';
 import defaultStyles from '../config/default-styles';
 import {windowWidth} from '../config/utils';
+import BENEFITS from '../data/BenefitsData';
+import routes from '../routes/routes';
+import {addItemToCart} from '../store/slices/cartSlice';
 
 export default function ServiceScreen(props) {
   const {service} = props.route.params;
-  console.log(service);
+
+  const {items: cartItems} = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
+  const handleAddToCart = async (item, inCart) => {
+    if (inCart) {
+      props.navigation.navigate(routes.Cart, {
+        serviceId: service.id,
+      });
+      return;
+    }
+    await dispatch(addItemToCart({...item, serviceId: service.id}));
+  };
 
   const renderItem = ({item}) => {
-    console.log(item);
+    const filteredCartItem = cartItems.filter(
+      (cartItem) => cartItem.id === item.id,
+    );
+    const inCart = filteredCartItem.length > 0;
     return (
-      <View
-        style={{
-          padding: 20,
-          backgroundColor: colors.light_blue,
-        }}>
-        <View
-          style={{
-            flexDirection: 'row',
-          }}>
-          <Card style={{width: 70, height: 70}} />
-          <View style={{flexDirection: 'column'}}>
-            <AppText
-              style={{
-                fontFamily: constants.medium,
-                fontSize: 13,
-                marginStart: 10,
-              }}>
-              {item.title}
-            </AppText>
-            <AppText
-              style={{
-                fontFamily: constants.regular,
-                fontSize: 10,
-                marginStart: 10,
-              }}>
-              {'ratings will be updated soon'}
-            </AppText>
-            <AppText
-              style={{
-                fontFamily: constants.semiBold,
-                fontSize: 10,
-                marginStart: 10,
-              }}>
-              {'₹299'}
-            </AppText>
-            <AppText
-              style={{
-                fontFamily: constants.regular,
-                fontSize: 10,
-                marginStart: 10,
-              }}>
-              {'🕑 55 min'}
+      <View style={styles.listItemContainer}>
+        <View style={styles.listItemMain}>
+          <Card style={styles.listItemCard} />
+          <View style={styles.listItemView}>
+            <AppText style={styles.listTitle}>{item.title}</AppText>
+            <AppText style={styles.listImage}>{item.ratings}</AppText>
+            <AppText style={styles.listPrice}>₹{item.price}</AppText>
+            <AppText style={styles.listTime}>
+              {`🕑 ${item.serviceTime}`}
             </AppText>
           </View>
-          <TouchableOpacity style={styles.button} onPress={() => {}}>
-            <Text style={(defaultStyles.subTitle, {fontSize: 12})}>Add +</Text>
+          <TouchableOpacity
+            style={[
+              styles.button,
+              {
+                backgroundColor: inCart
+                  ? colors.light_grey
+                  : colors.light_yellow,
+              },
+            ]}
+            // disabled={inCart}
+            onPress={handleAddToCart.bind(this, item, inCart)}>
+            <Text style={(defaultStyles.subTitle, {fontSize: 11})}>
+              {inCart ? 'Go to Cart' : 'Add to Cart'}
+            </Text>
           </TouchableOpacity>
         </View>
-        <AppText
-          style={{
-            fontSize: 12,
-            marginTop: 8,
-            fontFamily: constants.medium,
-          }}>
-          High Touch Point Cleaning
-        </AppText>
-        <AppText
-          style={{
-            fontSize: 10,
-            fontFamily: constants.regular,
-          }}>
-          High touch surfaces such as handles, mirrors & fittings are wiped down
-          spotless.
-        </AppText>
-        <AppText
-          style={{
-            fontSize: 12,
-            marginTop: 8,
-            fontFamily: constants.medium,
-          }}>
-          Eleminated build up
-        </AppText>
-        <AppText
-          style={{
-            fontSize: 10,
-            fontFamily: constants.regular,
-          }}>
-          Extensive cleaning of all areas helps clear build up of grins &
-          scaling. spotless
-        </AppText>
-        <AppText
-          style={{
-            fontSize: 12,
-            marginTop: 8,
-            fontFamily: constants.medium,
-          }}>
-          Professional Tools & Chemicals
-        </AppText>
-        <AppText
-          style={{
-            fontSize: 10,
-            fontFamily: constants.regular,
-          }}>
-          Diversity based chemicals, microfibres, grout brush & putty blades are
-          used to free dirt accumulation from in between surfaces.
-        </AppText>
+        {item.description.map((row, index) => {
+          return (
+            <View key={index.toString()}>
+              <AppText style={styles.description}>{row.type}</AppText>
+              <AppText style={styles.descriptionText}>
+                {row.explanation}
+              </AppText>
+            </View>
+          );
+        })}
       </View>
     );
   };
@@ -143,12 +104,28 @@ export default function ServiceScreen(props) {
           showsHorizontalScrollIndicator={false}
           horizontal={true}
           data={[
-            {id: 1, title: 'Cleans in between tiles'},
-            {id: 2, title: 'Kills germs & removes stains'},
-            {id: 3, title: 'Clear yellow marks'},
-            {id: 4, title: 'Removes scaling & water marks'},
+            {
+              id: 1,
+              title: 'Cleans in between tiles',
+              imageUrl: require('../assets/images/yellow_marks.jpg'),
+            },
+            {
+              id: 2,
+              title: 'Kills germs & removes stains',
+              imageUrl: require('../assets/images/yellow_marks.jpg'),
+            },
+            {
+              id: 3,
+              title: 'Clear yellow marks',
+              imageUrl: require('../assets/images/yellow_marks.jpg'),
+            },
+            {
+              id: 4,
+              title: 'Removes scaling & water marks',
+              imageUrl: require('../assets/images/yellow_marks.jpg'),
+            },
           ]}
-          keyExtractor={(item, index) => index}
+          keyExtractor={(item, index) => index.toString()}
           renderItem={({item}) => {
             return (
               <View
@@ -161,7 +138,7 @@ export default function ServiceScreen(props) {
                   style={{
                     height: 160,
                   }}>
-                  <Image />
+                  {/* <Image source={item.imageUrl} resizeMode={'contain'} /> */}
                 </Card>
                 <AppText
                   style={{
@@ -181,73 +158,17 @@ export default function ServiceScreen(props) {
 
   const renderFooter = () => {
     return (
-      <View
-        style={{
-          paddingStart: 20,
-          paddingEnd: 20,
-          paddingTop: 10,
-          marginTop: 12,
-          paddingBottom: 20,
-          borderTopRightRadius: 16,
-          borderTopLeftRadius: 16,
-          backgroundColor: '#F3F1F1',
-        }}>
-        <Text
-          style={[
-            defaultStyles.subTitle,
-            {
-              borderRadius: 8,
-              borderWidth: 1,
-              padding: 12,
-              marginTop: 10,
-              textAlign: 'center',
-              backgroundColor: colors.light_blue,
-            },
-          ]}>
-          Results as good as new
-        </Text>
-        <Text
-          style={[
-            defaultStyles.subTitle,
-            {
-              borderRadius: 8,
-              borderWidth: 1,
-              padding: 12,
-              marginTop: 8,
-              textAlign: 'center',
-              backgroundColor: colors.light_blue,
-            },
-          ]}>
-          Social Distancing and Maintained
-        </Text>
-        <Text
-          style={[
-            defaultStyles.subTitle,
-            {
-              borderRadius: 8,
-              borderWidth: 1,
-              padding: 12,
-              marginTop: 8,
-              textAlign: 'center',
-              backgroundColor: colors.light_blue,
-            },
-          ]}>
-          Trained and Verified Professionals
-        </Text>
-        <Text
-          style={[
-            defaultStyles.subTitle,
-            {
-              borderRadius: 8,
-              borderWidth: 1,
-              padding: 12,
-              marginTop: 8,
-              textAlign: 'center',
-              backgroundColor: colors.light_blue,
-            },
-          ]}>
-          We take care of our customers
-        </Text>
+      <View style={styles.footer}>
+        {BENEFITS.map((item, index) => {
+          return (
+            <View key={index} style={styles.footerItem}>
+              <Image source={require('../assets/images/ic_check.png')} />
+              <Text style={[defaultStyles.subTitle, {marginStart: 12}]}>
+                {item.benefit}
+              </Text>
+            </View>
+          );
+        })}
       </View>
     );
   };
@@ -260,12 +181,11 @@ export default function ServiceScreen(props) {
         </TouchableOpacity>
         <AppText style={styles.headerText}>{service.title}</AppText>
       </View>
-
+      <Seperator color={colors.seperator} />
       <FlatList
         ListHeaderComponent={renderHeader}
-        keyExtractor={(item, index) => index}
         showsVerticalScrollIndicator={false}
-        data={service.subServices}
+        data={service.subCategory}
         renderItem={renderItem}
         ListFooterComponent={renderFooter}
       />
@@ -299,6 +219,63 @@ const styles = StyleSheet.create({
     paddingTop: 6,
     paddingBottom: 6,
     position: 'absolute',
-    backgroundColor: colors.light_yellow,
+  },
+  listItemContainer: {
+    padding: 20,
+    backgroundColor: colors.light_blue,
+  },
+  listItemMain: {
+    flexDirection: 'row',
+  },
+  listItemCard: {
+    width: 70,
+    height: 70,
+  },
+  listItemView: {
+    flexDirection: 'column',
+  },
+  listTitle: {
+    fontFamily: constants.medium,
+    fontSize: 13,
+    marginStart: 10,
+  },
+  listImage: {
+    fontFamily: constants.regular,
+    fontSize: 10,
+    marginStart: 10,
+  },
+  listPrice: {
+    fontFamily: constants.semiBold,
+    fontSize: 10,
+    marginStart: 10,
+  },
+  listTime: {
+    fontFamily: constants.regular,
+    fontSize: 10,
+    marginStart: 10,
+  },
+  description: {
+    fontSize: 12,
+    marginTop: 8,
+    fontFamily: constants.medium,
+  },
+  descriptionText: {
+    fontSize: 10,
+    fontFamily: constants.regular,
+  },
+  footer: {
+    paddingStart: 20,
+    paddingEnd: 20,
+    paddingTop: 10,
+    marginTop: 12,
+    paddingBottom: 20,
+    borderTopRightRadius: 16,
+    borderTopLeftRadius: 16,
+    backgroundColor: '#F3F1F1',
+  },
+  footerItem: {
+    marginTop: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

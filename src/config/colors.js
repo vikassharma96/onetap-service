@@ -11,4 +11,6 @@ export default {
   background: '#f7f7f7',
   black: '#000',
   line: '#dbdbdb',
+  seperator: '#f4f4f4',
+  faded_grey: '#E0E0E0',
 };

@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import routes from './routes';
 import ServicesScreen from '../screens/ServicesScreen';
 import ServiceScreen from '../screens/ServiceScreen';
+import CartScreen from '../screens/CartScreen';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +19,7 @@ const HomeNavigator = (props) => {
       screenOptions={{headerShown: false}}>
       <Stack.Screen name={routes.Services} component={ServicesScreen} />
       <Stack.Screen name={routes.Service} component={ServiceScreen} />
+      <Stack.Screen name={routes.Cart} component={CartScreen} />
     </Stack.Navigator>
   );
 };

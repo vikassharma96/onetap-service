@@ -8,7 +8,6 @@ import {
   View,
   Image,
   FlatList,
-  ImageBackground,
 } from 'react-native';
 import colors from '../config/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';

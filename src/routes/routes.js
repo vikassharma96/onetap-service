@@ -6,4 +6,5 @@ export default Object.freeze({
   Service: 'Service',
   Orders: 'Orders',
   Profile: 'Profile',
+  Cart: 'Cart',
 });

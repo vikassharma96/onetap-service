@@ -34,7 +34,7 @@ export const MainNavigator = () => {
   // const dispatch = useDispatch();
 
   return (
-    <TabNavigator.Navigator {...tabProps}>
+    <TabNavigator.Navigator {...tabProps} backBehavior="initialRoute">
       <TabNavigator.Screen
         name={routes.Home}
         component={HomeNavigator}
