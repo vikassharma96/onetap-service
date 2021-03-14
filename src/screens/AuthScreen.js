@@ -49,27 +49,27 @@ export default function AuthScreen(props) {
 
   const onSignIn = () => {
     // todo to remove
-    onSignInSubmit();
-    /*
+    //onSignInSubmit();
+    
     window.recaptchaVerifier = firebase.auth.RecaptchaVerifier(
       'sign-in-button',
       {
         size: 'invisible',
         callback: (response) => {
-          // onSignInSubmit();
+           onSignInSubmit();
         },
       },
     );
     appVerifier = window.recaptchaVerifier;
-    */
+    
   };
 
   const onSignInSubmit = async () => {
     // todo to remove
-    navigation.navigate(routes.Verify);
-    return;
+    // navigation.navigate(routes.Verify);
+    // return;
     // todo to add
-    /*
+    
     try {
       const confirmation = await firebase
         .auth()
@@ -80,7 +80,7 @@ export default function AuthScreen(props) {
     } catch (error) {
       console.log('error', error);
     }
-    */
+    
   };
 
   return (

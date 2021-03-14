@@ -28,8 +28,8 @@ export default function VerifyScreen(props) {
       dispatch(authenticate());
     } catch (error) {
       // todo to remove
-      dispatch(authenticate());
-      console.log('Invalid code');
+      //dispatch(authenticate());
+      console.log('Invalid code' + error);
     }
   }
 
