@@ -31,7 +31,6 @@ function infiniteScroll(dataList, mySlide) {
 }
 
 const Carousel = ({data}) => {
-  console.log('data...', data);
   const mySlide = useRef();
 
   const scrollX = new Animated.Value(0);
@@ -64,7 +63,6 @@ const Carousel = ({data}) => {
           {useNativeDriver: false},
         )}
       />
-
       <View style={styles.dotView}>
         {data.map((_, i) => {
           let opacity = position.interpolate({

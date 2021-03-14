@@ -19,6 +19,8 @@ import Card from '../components/Card';
 import AppText from '../components/AppText';
 import defaultStyles from '../config/default-styles';
 import routes from '../routes/routes';
+import SERVICES from '../data/ServicesData';
+import CAROUSELS from '../data/CarouselData';
 
 export default function ServicesScreen(props) {
   const {navigation} = props;
@@ -26,23 +28,15 @@ export default function ServicesScreen(props) {
     return (
       <TouchableOpacity
         activeOpacity={0.9}
-        onPress={() => navigation.navigate(routes.Service, {item})}>
-        <Card
-          style={{
-            margin: 6,
-            width: windowWidth / 2 - 30,
-            alignItems: 'center',
-          }}>
+        onPress={() => navigation.navigate(routes.Service, {service: item})}>
+        <Card style={styles.card}>
           <Image
-            style={{
-              height: 100,
-              width: windowWidth / 2 - 20,
-            }}
+            style={styles.image}
             resizeMode={'contain'}
             source={item.imageUrl}
           />
           <AppText style={[defaultStyles.subTitle, {textAlign: 'center'}]}>
-            {item.name}
+            {item.title}
           </AppText>
         </Card>
       </TouchableOpacity>
@@ -52,27 +46,9 @@ export default function ServicesScreen(props) {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={colors.primary} />
-      <TouchableOpacity
-        style={{
-          backgroundColor: colors.light_blue,
-          flexDirection: 'row',
-          alignItems: 'center',
-          padding: 8,
-          shadowColor: colors.primary,
-          shadowOpacity: 0.26,
-          shadowRadius: 8,
-          elevation: 5,
-          shadowOffset: {width: 0, height: 2},
-        }}>
+      <TouchableOpacity style={styles.location}>
         <Icon name={'google-maps'} size={18} color={colors.primary} />
-        <Text
-          numberOfLines={1}
-          style={{
-            paddingStart: 4,
-            width: '90%',
-            fontSize: 12,
-            fontFamily: constants.medium,
-          }}>
+        <Text numberOfLines={1} style={styles.locationText}>
           {'Shipra Riviera, Indirapuram, Ghaziabad'}
         </Text>
         <Icon
@@ -81,72 +57,17 @@ export default function ServicesScreen(props) {
           color={colors.primary}
         />
       </TouchableOpacity>
-      <View
-        style={{
-          height: windowHeight / 3.6,
-          width: '100%',
-          paddingStart: 15,
-          paddingEnd: 15,
-          paddingTop: 15,
-          paddingBottom: 8,
-        }}>
-        <Carousel
-          data={[
-            {id: 1, imageUrl: require('../assets/images/repair.jpg')},
-            {id: 1, imageUrl: require('../assets/images/repair.jpg')},
-            {id: 1, imageUrl: require('../assets/images/repair.jpg')},
-          ]}
-        />
+      <View style={styles.carousel}>
+        <Carousel data={CAROUSELS} />
       </View>
-      <View
-        style={{
-          flex: 1,
-          paddingStart: 20,
-          paddingEnd: 20,
-          paddingTop: 10,
-          paddingBottom: 20,
-          borderTopRightRadius: 28,
-          borderTopLeftRadius: 28,
-          backgroundColor: '#F3F1F1',
-        }}>
-        <AppText
-          style={{
-            fontSize: 16,
-            fontFamily: constants.medium,
-            color: colors.primary,
-            textAlign: 'center',
-          }}>
-          Which service do you need?
-        </AppText>
+      <View style={styles.body}>
+        <AppText style={styles.headerText}>Which service do you need?</AppText>
         <FlatList
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{alignItems: 'center'}}
-          data={[
-            {
-              id: 1,
-              name: 'Cleaning Service',
-              imageUrl: require('../assets/images/cleaning.jpg'),
-            },
-            {
-              id: 2,
-              name: 'AC Repair Service',
-              imageUrl: require('../assets/images/acrepair.jpeg'),
-            },
-            {
-              id: 3,
-              name: 'Electrician',
-              imageUrl: require('../assets/images/electrician.jpeg'),
-            },
-            {
-              id: 4,
-              name: 'Plumber',
-              imageUrl: require('../assets/images/plumber.jpeg'),
-            },
-          ]}
+          contentContainerStyle={styles.listItem}
+          data={SERVICES}
           renderItem={renderItem}
-          // ItemSeparatorComponent={() => <View style={{marginTop: 8}}></View>}
           numColumns={2}
-          // style={{paddingBottom: 10}}
         />
       </View>
     </SafeAreaView>
@@ -157,5 +78,58 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  headerText: {
+    fontSize: 16,
+    fontFamily: constants.medium,
+    color: colors.primary,
+    textAlign: 'center',
+  },
+  location: {
+    backgroundColor: colors.light_blue,
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 8,
+    shadowColor: colors.primary,
+    shadowOpacity: 0.26,
+    shadowRadius: 8,
+    elevation: 5,
+    shadowOffset: {width: 0, height: 2},
+  },
+  locationText: {
+    paddingStart: 4,
+    width: '90%',
+    fontSize: 12,
+    fontFamily: constants.medium,
+  },
+  carousel: {
+    height: windowHeight / 3.6,
+    width: '100%',
+    paddingStart: 15,
+    paddingEnd: 15,
+    paddingTop: 15,
+    paddingBottom: 8,
+  },
+  body: {
+    flex: 1,
+    paddingStart: 20,
+    paddingEnd: 20,
+    paddingTop: 10,
+    paddingBottom: 20,
+    borderTopRightRadius: 28,
+    borderTopLeftRadius: 28,
+    backgroundColor: '#F3F1F1',
+  },
+  listItem: {
+    alignItems: 'center',
+  },
+  card: {
+    margin: 6,
+    width: windowWidth / 2 - 30,
+    alignItems: 'center',
+  },
+  image: {
+    height: 100,
+    width: windowWidth / 2 - 20,
   },
 });
