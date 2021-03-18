@@ -7,4 +7,5 @@ export default {
     'We are well known for providing all kind of services at very lower cost compared to any other service provider.',
   mobileNo: 'Enter Mobile Number',
   mobileValidate: 'Please enter a valid mobile number',
+  pleaseWait: 'Please wait...',
 };

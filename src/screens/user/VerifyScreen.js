@@ -7,6 +7,7 @@ import {
   ImageBackground,
   StyleSheet,
   Keyboard,
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch} from 'react-redux';
@@ -14,19 +15,23 @@ import AppText from '../../components/AppText';
 import colors from '../../config/colors';
 import constants from '../../config/constants';
 import defaultStyles from '../../config/default-styles';
-import {authenticate} from '../../store/slices/authSlice';
+import {authenticate, saveDataToStorage} from '../../store/slices/authSlice';
 
 export default function VerifyScreen(props) {
   const {navigation, route} = props;
   const {params} = route;
+  const [loading, setLoading] = useState(false);
   const [otp, setOTP] = useState();
   const dispatch = useDispatch();
 
   async function validateCode() {
     Keyboard.dismiss();
+    setLoading(true);
     try {
       const response = await params.confirm.confirm(otp);
+      setLoading(false);
       const user = response.user;
+      await saveDataToStorage(user);
       dispatch(
         authenticate({
           uid: user.uid,
@@ -36,6 +41,7 @@ export default function VerifyScreen(props) {
         }),
       );
     } catch (error) {
+      setLoading(false);
       // todo to remove
       // dispatch(authenticate());
       console.log('Invalid code', error);
@@ -66,7 +72,11 @@ export default function VerifyScreen(props) {
       </View>
       {!!otp && otp.length === 6 && (
         <TouchableOpacity style={styles.button} onPress={validateCode}>
-          <Text style={defaultStyles.subTitle}>Submit</Text>
+          {loading ? (
+            <ActivityIndicator size="small" color={colors.black} />
+          ) : (
+            <Text style={defaultStyles.subTitle}>Submit</Text>
+          )}
         </TouchableOpacity>
       )}
     </ImageBackground>
@@ -88,7 +98,7 @@ const styles = StyleSheet.create({
   input: {
     margin: 60,
     fontSize: 28,
-    letterSpacing: 20,
+    letterSpacing: 16,
     textAlign: 'center',
     borderBottomWidth: 2,
     fontFamily: constants.semiBold,
@@ -100,6 +110,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
     flexGrow: 1,
+    width: 80,
     paddingStart: 12,
     paddingEnd: 12,
     paddingTop: 6,

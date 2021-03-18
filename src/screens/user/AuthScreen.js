@@ -8,6 +8,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import colors from '../../config/colors';
 import LottieView from 'lottie-react-native';
@@ -25,6 +26,7 @@ export default function AuthScreen(props) {
   const {navigation} = props;
   const [inFocus, setInFocus] = useState(false);
   const [number, setNumber] = useState();
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -46,10 +48,18 @@ export default function AuthScreen(props) {
   };
 
   async function handleSignIn() {
-    const confirmation = await auth().signInWithPhoneNumber(`+91${number}`);
-    navigation.navigate(routes.Verify, {
-      confirm: confirmation,
-    });
+    setLoading(true);
+    try {
+      const confirmation = await auth().signInWithPhoneNumber(`+91${number}`);
+      setLoading(false);
+      console.log('confitmation', confirmation);
+      navigation.navigate(routes.Verify, {
+        confirm: confirmation,
+      });
+    } catch (error) {
+      console.log('error', error);
+      setLoading(false);
+    }
   }
 
   return (
@@ -119,8 +129,15 @@ export default function AuthScreen(props) {
           </Text>
         )}
         {!!number && number.trim().length === 10 && !inFocus && (
-          <TouchableOpacity style={styles.button} onPress={handleSignIn}>
-            <Text style={defaultStyles.subTitle}>Continue</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleSignIn}
+            disabled={loading}>
+            {loading ? (
+              <ActivityIndicator size="small" color={colors.black} />
+            ) : (
+              <Text style={defaultStyles.subTitle}>Continue</Text>
+            )}
           </TouchableOpacity>
         )}
       </View>
@@ -207,10 +224,13 @@ const styles = StyleSheet.create({
   button: {
     bottom: 12,
     end: 10,
+    width: 100,
     borderWidth: 1,
     borderRadius: 4,
     flexGrow: 1,
-    padding: 6,
+    paddingTop: 6,
+    paddingBottom: 6,
+    alignItems: 'center',
     position: 'absolute',
     backgroundColor: colors.light_yellow,
   },

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   StyleSheet,
   FlatList,
@@ -21,7 +21,8 @@ export default function OrdersScreen(props) {
   const {list: orders} = useSelector((state) => state.order);
   console.log('orders', orders);
 
-  const renderItem = ({item}) => {
+  const RenderItem = useCallback(({item}) => {
+    const [expand, setExpand] = useState(false);
     const currentService = SERVICES.find(
       (service) => service.id === item.services[0].serviceId,
     );
@@ -56,10 +57,58 @@ export default function OrdersScreen(props) {
               ₹{item.total}
             </AppText>
           </View>
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              marginEnd: 10,
+              alignItems: 'flex-end',
+              justifyContent: 'center',
+            }}
+            onPress={() => setExpand(!expand)}>
+            <Icon
+              name={
+                expand
+                  ? 'arrow-up-drop-circle-outline'
+                  : 'arrow-down-drop-circle-outline'
+              }
+              color={colors.accent}
+              size={28}
+            />
+          </TouchableOpacity>
         </View>
+        {expand && (
+          <>
+            {item.services.map((service) => {
+              return (
+                <View
+                  key={service.id}
+                  style={{
+                    flexDirection: 'row',
+                    padding: 12,
+                    justifyContent: 'space-between',
+                  }}>
+                  <AppText
+                    style={{
+                      fontFamily: constants.regular,
+                      fontSize: 13,
+                    }}>
+                    {service.title}
+                  </AppText>
+                  <AppText
+                    style={{
+                      fontFamily: constants.medium,
+                      fontSize: 14,
+                    }}>
+                    ₹{service.price}
+                  </AppText>
+                </View>
+              );
+            })}
+          </>
+        )}
       </View>
     );
-  };
+  });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -111,7 +160,7 @@ export default function OrdersScreen(props) {
       <FlatList
         data={orders}
         keyExtractor={(item) => item.orderNo.toString()}
-        renderItem={renderItem}
+        renderItem={({item}) => <RenderItem item={item} />}
       />
     </SafeAreaView>
   );

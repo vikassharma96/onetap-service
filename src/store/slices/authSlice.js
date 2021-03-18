@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createSlice} from '@reduxjs/toolkit';
 
 const authSlice = createSlice({
@@ -24,6 +25,10 @@ const authSlice = createSlice({
 
 // actions
 export const {authenticate, autoLogin, logout} = authSlice.actions;
+
+export const saveDataToStorage = async (user) => {
+  await AsyncStorage.setItem('user', JSON.stringify(user));
+};
 
 // reducer
 export default authSlice.reducer;

@@ -14,14 +14,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "49460515607-l1ph6aqagu9kd39hqqqsq3vecoes2m66.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.teckudos.onetapservice",
-            "certificate_hash": "fea224fd8f778496b8c5b8d143db36753bf43357"
-          }
-        },
-        {
           "client_id": "49460515607-u4e1a7dnh899fas6g1c1250k625d7ev1.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -37,6 +29,13 @@
             {
               "client_id": "49460515607-u4e1a7dnh899fas6g1c1250k625d7ev1.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "49460515607-m5ll6ufuj055029cftk450v0akoicb7r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.teckudos.onetapservice"
+              }
             }
           ]
         }

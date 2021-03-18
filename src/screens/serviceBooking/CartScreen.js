@@ -22,6 +22,8 @@ import Snackbar from 'react-native-snackbar';
 import {formatDate} from '../../config/utils';
 import {emptyCart, removeFromCart} from '../../store/slices/cartSlice';
 import {placeOrder} from '../../store/slices/orderSlice';
+import strings from '../../config/strings';
+import routes from '../../routes/routes';
 
 export default function CartScreen(props) {
   const {navigation, route} = props;
@@ -66,8 +68,12 @@ export default function CartScreen(props) {
     };
     await dispatch(placeOrder(orderInfo));
     setTimeout(() => {
-      const popAction = StackActions.popToTop();
-      navigation.dispatch(popAction);
+      navigation.reset({
+        index: 0,
+        routes: [{name: routes.Orders}],
+      });
+      // const popAction = StackActions.popToTop();
+      // navigation.dispatch(popAction);
     }, 1000);
   };
 
@@ -83,7 +89,9 @@ export default function CartScreen(props) {
         <Seperator color={colors.seperator} />
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <ActivityIndicator size={'large'} color={colors.primary} />
-          <Text style={{fontFamily: constants.regular}}>Please wait...</Text>
+          <Text style={{fontFamily: constants.regular}}>
+            {strings.pleaseWait}
+          </Text>
         </View>
       </SafeAreaView>
     );

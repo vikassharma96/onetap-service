@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   image: {
     height: windowHeight * 0.3,
     width: windowWidth,
-    resizeMode: 'cover',
+    // resizeMode: '',
     overflow: 'hidden',
   },
 });

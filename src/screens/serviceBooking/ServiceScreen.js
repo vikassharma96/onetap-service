@@ -8,7 +8,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import {Card} from 'react-native-paper';
+import {Card, Badge} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import AppText from '../../components/AppText';
@@ -35,6 +35,17 @@ export default function ServiceScreen(props) {
       return;
     }
     await dispatch(addItemToCart({...item, serviceId: service.id}));
+  };
+
+  const inCartCount = () => {
+    let count = 0;
+    service.subCategory.map((currentService) => {
+      const filteredCartItem = cartItems.filter(
+        (cartItem) => cartItem.id === currentService.id,
+      );
+      count = filteredCartItem.length > 0 ? count + 1 : count;
+    });
+    return count;
   };
 
   const renderItem = ({item}) => {
@@ -91,7 +102,6 @@ export default function ServiceScreen(props) {
           paddingStart: 20,
           marginTop: 8,
           paddingEnd: 20,
-          paddingBottom: 8,
         }}>
         <AppText
           style={{
@@ -138,12 +148,12 @@ export default function ServiceScreen(props) {
                 style={{
                   margin: 8,
                   width: windowWidth * 0.4,
-                  height: windowHeight * 0.275,
+                  // height: windowHeight * 0.3,
                 }}>
                 <Image
                   style={{
                     width: '100%',
-                    height: '90%',
+                    height: windowHeight * 0.26,
                     borderRadius: 3,
                   }}
                   source={item.imageUrl}
@@ -153,6 +163,7 @@ export default function ServiceScreen(props) {
                   style={{
                     fontSize: 12,
                     marginTop: 8,
+                    lineHeight: 15,
                     textAlign: 'center',
                   }}>
                   {item.title}
@@ -189,6 +200,26 @@ export default function ServiceScreen(props) {
           <Icon size={28} name={'arrow-left'} color={colors.primary} />
         </TouchableOpacity>
         <AppText style={styles.headerText}>{service.title}</AppText>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            alignSelf: 'center',
+            justifyContent: 'flex-end',
+          }}>
+          <Icon size={28} name={'cart'} color={colors.primary} />
+          <Badge
+            style={{
+              top: -2,
+              position: 'absolute',
+              color: colors.black,
+              borderWidth: 0.6,
+              backgroundColor: colors.light_yellow,
+            }}
+            size={15}>
+            {inCartCount()}
+          </Badge>
+        </View>
       </View>
       <Seperator color={colors.seperator} />
       <FlatList

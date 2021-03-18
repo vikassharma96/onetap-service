@@ -1,34 +1,31 @@
 import React, {useEffect} from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, StyleSheet, View, Text} from 'react-native';
 import {useDispatch} from 'react-redux';
 import colors from '../config/colors';
-import auth from '@react-native-firebase/auth';
 import {authenticate, autoLogin} from '../store/slices/authSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import constants from '../config/constants';
+import strings from '../config/strings';
 
 const StartupScreen = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
-
-  const onAuthStateChanged = (user) => {
-    if (user) {
-      dispatch(
-        authenticate({
-          token: 'abcd1234',
-          userId: '9582296350',
-        }),
-      );
-    } else {
-      dispatch(autoLogin());
-    }
-  };
+    const tryLogin = async () => {
+      const user = await AsyncStorage.getItem('user');
+      if (!user) {
+        dispatch(autoLogin());
+        return;
+      }
+      dispatch(authenticate(JSON.parse(user)));
+    };
+    tryLogin();
+  }, [dispatch]);
 
   return (
     <View style={styles.screen}>
       <ActivityIndicator size="large" color={colors.primary} />
+      <Text style={{fontFamily: constants.regular}}>{strings.pleaseWait}</Text>
     </View>
   );
 };
