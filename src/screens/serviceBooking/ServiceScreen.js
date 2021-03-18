@@ -11,15 +11,15 @@ import {
 import {Card} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch, useSelector} from 'react-redux';
-import AppText from '../components/AppText';
-import Seperator from '../components/Seperator';
-import colors from '../config/colors';
-import constants from '../config/constants';
-import defaultStyles from '../config/default-styles';
-import {windowWidth} from '../config/utils';
-import BENEFITS from '../data/BenefitsData';
-import routes from '../routes/routes';
-import {addItemToCart} from '../store/slices/cartSlice';
+import AppText from '../../components/AppText';
+import Seperator from '../../components/Seperator';
+import colors from '../../config/colors';
+import constants from '../../config/constants';
+import defaultStyles from '../../config/default-styles';
+import {windowHeight, windowWidth} from '../../config/utils';
+import BENEFITS from '../../data/BenefitsData';
+import routes from '../../routes/routes';
+import {addItemToCart} from '../../store/slices/cartSlice';
 
 export default function ServiceScreen(props) {
   const {service} = props.route.params;
@@ -86,7 +86,13 @@ export default function ServiceScreen(props) {
 
   const renderHeader = () => {
     return (
-      <View style={{paddingStart: 20, paddingEnd: 20, paddingBottom: 8}}>
+      <View
+        style={{
+          paddingStart: 20,
+          marginTop: 8,
+          paddingEnd: 20,
+          paddingBottom: 8,
+        }}>
         <AppText
           style={{
             fontFamily: constants.semiBold,
@@ -107,22 +113,22 @@ export default function ServiceScreen(props) {
             {
               id: 1,
               title: 'Cleans in between tiles',
-              imageUrl: require('../assets/images/yellow_marks.jpg'),
+              imageUrl: require('../../assets/images/clean_between_tiles.jpg'),
             },
             {
               id: 2,
               title: 'Kills germs & removes stains',
-              imageUrl: require('../assets/images/yellow_marks.jpg'),
+              imageUrl: require('../../assets/images/kill_germs.jpg'),
             },
             {
               id: 3,
               title: 'Clear yellow marks',
-              imageUrl: require('../assets/images/yellow_marks.jpg'),
+              imageUrl: require('../../assets/images/yellow_marks.jpg'),
             },
             {
               id: 4,
               title: 'Removes scaling & water marks',
-              imageUrl: require('../assets/images/yellow_marks.jpg'),
+              imageUrl: require('../../assets/images/removes_water.jpg'),
             },
           ]}
           keyExtractor={(item, index) => index.toString()}
@@ -131,15 +137,18 @@ export default function ServiceScreen(props) {
               <View
                 style={{
                   margin: 8,
-                  width: windowWidth / 2 - 40,
-                  height: 180,
+                  width: windowWidth * 0.4,
+                  height: windowHeight * 0.275,
                 }}>
-                <Card
+                <Image
                   style={{
-                    height: 160,
-                  }}>
-                  {/* <Image source={item.imageUrl} resizeMode={'contain'} /> */}
-                </Card>
+                    width: '100%',
+                    height: '90%',
+                    borderRadius: 3,
+                  }}
+                  source={item.imageUrl}
+                  resizeMode={'cover'}
+                />
                 <AppText
                   style={{
                     fontSize: 12,
@@ -162,7 +171,7 @@ export default function ServiceScreen(props) {
         {BENEFITS.map((item, index) => {
           return (
             <View key={index} style={styles.footerItem}>
-              <Image source={require('../assets/images/ic_check.png')} />
+              <Image source={require('../../assets/images/ic_check.png')} />
               <Text style={[defaultStyles.subTitle, {marginStart: 12}]}>
                 {item.benefit}
               </Text>

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Image, StyleSheet} from 'react-native';
-import {windowWidth} from '../config/utils';
+import {windowHeight, windowWidth} from '../config/utils';
 
 const CarouselItem = ({imageUrl}) => {
   return <Image style={styles.image} source={imageUrl} />;
@@ -8,9 +8,10 @@ const CarouselItem = ({imageUrl}) => {
 
 const styles = StyleSheet.create({
   image: {
+    height: windowHeight * 0.3,
     width: windowWidth,
-    height: '100%',
-    resizeMode: 'stretch',
+    resizeMode: 'cover',
+    overflow: 'hidden',
   },
 });
 

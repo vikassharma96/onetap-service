@@ -5,9 +5,9 @@ import colors from '../config/colors';
 import constants from '../config/constants';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import routes from './routes';
-import ServicesScreen from '../screens/ServicesScreen';
-import ServiceScreen from '../screens/ServiceScreen';
-import CartScreen from '../screens/CartScreen';
+import ServicesScreen from '../screens/serviceBooking/ServicesScreen';
+import ServiceScreen from '../screens/serviceBooking/ServiceScreen';
+import CartScreen from '../screens/serviceBooking/CartScreen';
 
 const Stack = createStackNavigator();
 

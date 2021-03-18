@@ -9,19 +9,17 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import colors from '../config/colors';
+import colors from '../../config/colors';
 import LottieView from 'lottie-react-native';
-import strings from '../config/strings';
-import defaultStyles from '../config/default-styles';
-import {windowWidth, windowHeight} from '../config/utils';
-import constants from '../config/constants';
-import {firebase} from '../firebase/config';
-import routes from '../routes/routes';
-import AppText from '../components/AppText';
+import strings from '../../config/strings';
+import defaultStyles from '../../config/default-styles';
+import {windowWidth, windowHeight} from '../../config/utils';
+import constants from '../../config/constants';
+import routes from '../../routes/routes';
+import AppText from '../../components/AppText';
 import {useDispatch} from 'react-redux';
-import {authenticate} from '../store/slices/authSlice';
-
-let appVerifier;
+import {authenticate} from '../../store/slices/authSlice';
+import auth from '@react-native-firebase/auth';
 
 export default function AuthScreen(props) {
   const {navigation} = props;
@@ -47,59 +45,29 @@ export default function AuthScreen(props) {
     setInFocus(false);
   };
 
-  const onSignIn = () => {
-    // todo to remove
-    onSignInSubmit();
-    /*
-    window.recaptchaVerifier = firebase.auth.RecaptchaVerifier(
-      'sign-in-button',
-      {
-        size: 'invisible',
-        callback: (response) => {
-          // onSignInSubmit();
-        },
-      },
-    );
-    appVerifier = window.recaptchaVerifier;
-    */
-  };
-
-  const onSignInSubmit = async () => {
-    // todo to remove
-    navigation.navigate(routes.Verify);
-    return;
-    // todo to add
-    /*
-    try {
-      const confirmation = await firebase
-        .auth()
-        .signInWithPhoneNumber(`+91${number}`, appVerifier);
-      navigation.navigate(routes.Verify, {
-        confirm: confirmation,
-      });
-    } catch (error) {
-      console.log('error', error);
-    }
-    */
-  };
+  async function handleSignIn() {
+    const confirmation = await auth().signInWithPhoneNumber(`+91${number}`);
+    navigation.navigate(routes.Verify, {
+      confirm: confirmation,
+    });
+  }
 
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={colors.light_blue} />
       <View style={styles.animate}>
         <TouchableOpacity
-          onPress={() => dispatch(authenticate())}
-          style={{
-            position: 'absolute',
-            top: 8,
-            end: 8,
-            backgroundColor: colors.light_yellow,
-            borderRadius: 16,
-            paddingStart: 16,
-            paddingEnd: 16,
-            paddingTop: 5,
-            paddingBottom: 5,
-          }}>
+          onPress={() =>
+            dispatch(
+              authenticate({
+                uid: 'eKRwxvihkQgmuvKaOPDlSrBsUyN2',
+                user: {
+                  phoneNumber: '+919582296350',
+                },
+              }),
+            )
+          }
+          style={styles.skip}>
           <AppText>Skip</AppText>
         </TouchableOpacity>
         {inFocus ? (
@@ -117,7 +85,7 @@ export default function AuthScreen(props) {
               autoPlay
               loop
               style={{height: windowHeight * 0.4}}
-              source={require('../assets/animations/services.json')}
+              source={require('../../assets/animations/services.json')}
             />
             <Text style={[defaultStyles.subTitle, styles.text]}>
               {strings.intro1}
@@ -131,7 +99,7 @@ export default function AuthScreen(props) {
           <View style={styles.countryCode}>
             <Image
               style={styles.image}
-              source={require('../assets/images/flag.png')}
+              source={require('../../assets/images/flag.png')}
             />
             <Text style={defaultStyles.title}>+91</Text>
           </View>
@@ -151,7 +119,7 @@ export default function AuthScreen(props) {
           </Text>
         )}
         {!!number && number.trim().length === 10 && !inFocus && (
-          <TouchableOpacity style={styles.button} onPress={onSignIn}>
+          <TouchableOpacity style={styles.button} onPress={handleSignIn}>
             <Text style={defaultStyles.subTitle}>Continue</Text>
           </TouchableOpacity>
         )}
@@ -175,6 +143,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 20,
     backgroundColor: colors.light_green,
+  },
+  skip: {
+    position: 'absolute',
+    top: 8,
+    end: 8,
+    backgroundColor: colors.light_yellow,
+    borderRadius: 16,
+    paddingStart: 16,
+    paddingEnd: 16,
+    paddingTop: 5,
+    paddingBottom: 5,
   },
   text: {
     textAlign: 'center',

@@ -26,19 +26,36 @@ export function formatDate() {
   sHour = padValue(sHour);
 
   return (
-    sMonth +
-    '-' +
     sDay +
-    '-' +
-    sYear +
-    ',' +
     ' ' +
+    getCurrentMonth(sMonth) +
+    ' ' +
+    sYear +
+    ' | ' +
     sHour +
     ':' +
     sMinute +
     ' ' +
     sAMPM
   );
+}
+
+function getCurrentMonth(month) {
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  return months[month - 1];
 }
 
 function padValue(value) {

@@ -9,17 +9,17 @@ import {
   Image,
   FlatList,
 } from 'react-native';
-import colors from '../config/colors';
+import colors from '../../config/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import constants from '../config/constants';
-import Carousel from '../components/Carousel';
-import {windowHeight, windowWidth} from '../config/utils';
-import Card from '../components/Card';
-import AppText from '../components/AppText';
-import defaultStyles from '../config/default-styles';
-import routes from '../routes/routes';
-import SERVICES from '../data/ServicesData';
-import CAROUSELS from '../data/CarouselData';
+import constants from '../../config/constants';
+import Carousel from '../../components/Carousel';
+import {windowHeight, windowWidth} from '../../config/utils';
+import Card from '../../components/Card';
+import AppText from '../../components/AppText';
+import defaultStyles from '../../config/default-styles';
+import routes from '../../routes/routes';
+import SERVICES from '../../data/ServicesData';
+import CAROUSELS from '../../data/CarouselData';
 
 export default function ServicesScreen(props) {
   const {navigation} = props;
@@ -102,18 +102,15 @@ const styles = StyleSheet.create({
     fontFamily: constants.medium,
   },
   carousel: {
-    height: windowHeight / 3.6,
-    width: '100%',
-    paddingStart: 15,
-    paddingEnd: 15,
-    paddingTop: 15,
-    paddingBottom: 8,
+    height: windowHeight * 0.3,
+    width: windowWidth,
   },
   body: {
     flex: 1,
     paddingStart: 20,
     paddingEnd: 20,
-    paddingTop: 10,
+    marginTop: -20,
+    paddingTop: 12,
     paddingBottom: 20,
     borderTopRightRadius: 28,
     borderTopLeftRadius: 28,

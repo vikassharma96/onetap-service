@@ -7,8 +7,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import routes from './routes';
 import HomeNavigator from './HomeNavigator';
-import OrdersScreen from '../screens/OrdersScreen';
-import ProfileScreen from '../screens/ProfileScreen';
+import OrdersScreen from '../screens/serviceBooking/OrdersScreen';
+import ProfileScreen from '../screens/user/ProfileScreen';
 
 const TabNavigator =
   Platform.OS === 'android'

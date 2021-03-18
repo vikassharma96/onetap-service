@@ -10,26 +10,35 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch} from 'react-redux';
-import AppText from '../components/AppText';
-import colors from '../config/colors';
-import constants from '../config/constants';
-import defaultStyles from '../config/default-styles';
-import {authenticate} from '../store/slices/authSlice';
+import AppText from '../../components/AppText';
+import colors from '../../config/colors';
+import constants from '../../config/constants';
+import defaultStyles from '../../config/default-styles';
+import {authenticate} from '../../store/slices/authSlice';
 
 export default function VerifyScreen(props) {
   const {navigation, route} = props;
+  const {params} = route;
   const [otp, setOTP] = useState();
   const dispatch = useDispatch();
 
   async function validateCode() {
     Keyboard.dismiss();
     try {
-      await route.params.confirm.confirm(otp);
-      dispatch(authenticate());
+      const response = await params.confirm.confirm(otp);
+      const user = response.user;
+      dispatch(
+        authenticate({
+          uid: user.uid,
+          user: {
+            phoneNumber: user.phoneNumber,
+          },
+        }),
+      );
     } catch (error) {
       // todo to remove
-      dispatch(authenticate());
-      console.log('Invalid code');
+      // dispatch(authenticate());
+      console.log('Invalid code', error);
     }
   }
 
@@ -37,7 +46,7 @@ export default function VerifyScreen(props) {
     <ImageBackground
       blurRadius={0.2}
       style={styles.background}
-      source={require('../assets/images/repair.jpg')}>
+      source={require('../../assets/images/repair.jpg')}>
       <TouchableOpacity
         style={styles.header}
         onPress={() => navigation.goBack()}>

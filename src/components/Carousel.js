@@ -3,7 +3,7 @@ import {View, StyleSheet, FlatList, Animated} from 'react-native';
 import colors from '../config/colors';
 import CarouselItem from './CarouselItem';
 
-import {windowWidth} from '../config/utils';
+import {windowHeight, windowWidth} from '../config/utils';
 
 function infiniteScroll(dataList, mySlide) {
   const numberOfData = dataList.length;
@@ -27,7 +27,7 @@ function infiniteScroll(dataList, mySlide) {
     } catch (e) {
       console.log('slider error!', e);
     }
-  }, 3000);
+  }, 3500);
 }
 
 const Carousel = ({data}) => {
@@ -91,15 +91,15 @@ const Carousel = ({data}) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: '100%',
-    width: '100%',
+    height: windowHeight * 0.3,
+    width: windowWidth,
   },
   dotView: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 8,
+    bottom: 16,
     margin: 5,
     alignSelf: 'center',
   },

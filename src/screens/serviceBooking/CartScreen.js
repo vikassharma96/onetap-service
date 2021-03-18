@@ -4,22 +4,24 @@ import {
   StyleSheet,
   Image,
   View,
+  Text,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import {Card} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch, useSelector} from 'react-redux';
-import AppText from '../components/AppText';
-import Seperator from '../components/Seperator';
+import AppText from '../../components/AppText';
+import Seperator from '../../components/Seperator';
 import {StackActions} from '@react-navigation/native';
-import colors from '../config/colors';
-import constants from '../config/constants';
-import defaultStyles from '../config/default-styles';
-import {windowHeight, windowWidth} from '../config/utils';
+import colors from '../../config/colors';
+import constants from '../../config/constants';
+import defaultStyles from '../../config/default-styles';
+import {windowHeight, windowWidth} from '../../config/utils';
 import Snackbar from 'react-native-snackbar';
-import {formatDate} from '../config/utils';
-import {emptyCart, removeFromCart} from '../store/slices/cartSlice';
-import {placeOrder} from '../store/slices/orderSlice';
+import {formatDate} from '../../config/utils';
+import {emptyCart, removeFromCart} from '../../store/slices/cartSlice';
+import {placeOrder} from '../../store/slices/orderSlice';
 
 export default function CartScreen(props) {
   const {navigation, route} = props;
@@ -66,11 +68,25 @@ export default function CartScreen(props) {
     setTimeout(() => {
       const popAction = StackActions.popToTop();
       navigation.dispatch(popAction);
-    }, 200);
+    }, 1000);
   };
 
   if (isOrderPlaced) {
-    return null;
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Icon size={28} name={'arrow-left'} color={colors.primary} />
+          </TouchableOpacity>
+          <AppText style={styles.headerText}>{'My Cart'}</AppText>
+        </View>
+        <Seperator color={colors.seperator} />
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <ActivityIndicator size={'large'} color={colors.primary} />
+          <Text style={{fontFamily: constants.regular}}>Please wait...</Text>
+        </View>
+      </SafeAreaView>
+    );
   }
 
   return (
@@ -145,7 +161,7 @@ export default function CartScreen(props) {
                   alignSelf: 'center',
                   justifyContent: 'flex-end',
                 }}>
-                <Image source={require('../assets/images/ic_delete.png')} />
+                <Image source={require('../../assets/images/ic_delete.png')} />
               </TouchableOpacity>
             </View>
           </View>
