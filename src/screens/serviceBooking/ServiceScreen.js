@@ -200,13 +200,18 @@ export default function ServiceScreen(props) {
           <Icon size={28} name={'arrow-left'} color={colors.primary} />
         </TouchableOpacity>
         <AppText style={styles.headerText}>{service.title}</AppText>
-        <View
+        <TouchableOpacity
           style={{
             flex: 1,
             flexDirection: 'row',
             alignSelf: 'center',
             justifyContent: 'flex-end',
-          }}>
+          }}
+          onPress={() =>
+            props.navigation.navigate(routes.Cart, {
+              serviceId: service.id,
+            })
+          }>
           <Icon size={28} name={'cart'} color={colors.primary} />
           <Badge
             style={{
@@ -219,7 +224,7 @@ export default function ServiceScreen(props) {
             size={15}>
             {inCartCount()}
           </Badge>
-        </View>
+        </TouchableOpacity>
       </View>
       <Seperator color={colors.seperator} />
       <FlatList
